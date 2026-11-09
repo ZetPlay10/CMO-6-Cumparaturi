@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Cumparaturi</string>
+    <string name="titlu">Listă de cumpărături</string>
+    <string name="produs_nou">Produs nou</string>
+    <string name="adauga">Adaugă</string>
+    <string name="sterge">Șterge</string>
+    <string name="lista_goala">Lista este goală</string>
+    <string name="sumar">%1$d din %2$d cumpărate</string>
 </resources>
