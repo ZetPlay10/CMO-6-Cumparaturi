@@ -6,10 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -53,6 +57,42 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun ListaProduse(
+    produse: List<Produs>,
+    onBifat: (Produs) -> Unit,
+    onSterge: (Produs) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    if (produse.isEmpty()) {
+        Box(
+            modifier = modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.lista_goala),
+                color = MaterialTheme.colorScheme.outline
+            )
+        }
+    } else {
+        LazyColumn(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            // key: fiecare rand este identificat dupa id, nu dupa pozitie
+            items(produse, key = { it.id }) { p ->
+                ProdusRand(
+                    produs = p,
+                    onBifat = { onBifat(p) },
+                    onSterge = { onSterge(p) },
+                    // animatie la adaugare, stergere si mutare
+                    modifier = Modifier.animateItem()
+                )
             }
         }
     }
