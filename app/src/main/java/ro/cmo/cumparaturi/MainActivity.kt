@@ -45,21 +45,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ro.cmo.cumparaturi.ui.theme.CumparaturiTheme
 
-// ------------------------------------------------------------ Modelul
-data class Produs(
-    val id: Int,
-    val nume: String,
-    val cumparat: Boolean = false
-)
-
-// Date de pornire, scrise in cod
-val produseInitiale = listOf(
-    Produs(1, "Pâine"),
-    Produs(2, "Lapte", cumparat = true),
-    Produs(3, "Ouă"),
-    Produs(4, "Mere")
-)
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
