@@ -67,10 +67,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             CumparaturiTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Text(
-                        text = "Hello, world!",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    EcranCumparaturi(modifier = Modifier.padding(innerPadding))
                 }
             }
         }
