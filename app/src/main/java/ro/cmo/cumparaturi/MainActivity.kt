@@ -29,11 +29,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ro.cmo.cumparaturi.ui.theme.CumparaturiTheme
 
 class MainActivity : ComponentActivity() {
@@ -59,18 +55,11 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// ------------------------------------------------------------ Ecranul (CU stare)
-// Starea este ridicata aici: o citesc si o modifica mai multe componente.
 @Composable
-fun EcranCumparaturi(modifier: Modifier = Modifier) {
-    // Lista observabila: add, remove si set declanseaza recompozitia.
-    // remember o pastreaza intre recompozitii, dar NU si la rotirea ecranului.
-    val produse = remember {
-        mutableStateListOf<Produs>()
-            .apply { addAll(produseInitiale) }
-    }
-    var textNou by remember { mutableStateOf("") }
-
+fun EcranCumparaturi(
+    modifier: Modifier = Modifier,
+    vm: CumparaturiViewModel = viewModel()
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -84,35 +73,23 @@ fun EcranCumparaturi(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(12.dp))
 
         CampAdaugare(
-            text = textNou,
-            onTextChange = { textNou = it },
-            onAdauga = {
-                val nume = textNou.trim()
-                if (nume.isNotEmpty()) {
-                    val id = (produse.maxOfOrNull { it.id } ?: 0) + 1
-                    produse.add(0, Produs(id, nume))
-                    textNou = ""
-                }
-            }
+            text = vm.textNou,
+            onTextChange = vm::modificaText,
+            onAdauga = vm::adaugaProdus
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Toate modificarile listei au loc aici, intr-un singur loc.
         ListaProduse(
-            produse = produse,
-            onBifat = { p ->
-                val i = produse.indexOfFirst { it.id == p.id }
-                if (i >= 0) produse[i] = p.copy(cumparat = !p.cumparat)
-            },
-            onSterge = { p -> produse.removeAll { it.id == p.id } },
+            produse = vm.produse,
+            onBifat = vm::bifeazaProdus,
+            onSterge = vm::stergeProdus,
             modifier = Modifier.weight(1f)
         )
 
-        // Stare derivata: calculata din lista, nu stocata separat.
         Sumar(
-            cumparate = produse.count { it.cumparat },
-            total = produse.size
+            cumparate = vm.produse.count { it.cumparat },
+            total = vm.produse.size
         )
     }
 }
