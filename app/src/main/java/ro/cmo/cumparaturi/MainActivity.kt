@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -146,4 +147,16 @@ fun ProdusRandPreview() {
             onSterge = {}
         )
     }
+}
+
+@Composable
+fun Sumar(cumparate: Int, total: Int, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(R.string.sumar, cumparate, total),
+        style = MaterialTheme.typography.labelLarge,
+        textAlign = TextAlign.Center,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp)
+    )
 }
